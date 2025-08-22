@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  
+  body {
+    @apply bg-light-200 text-dark-700;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-primary-500 text-white px-4 py-2 rounded-lg hover:bg-primary-600 transition-colors font-medium shadow-sm;
+  }
+  
+  .btn-secondary {
+    @apply bg-light-200 text-dark-800 px-4 py-2 rounded-lg hover:bg-light-300 transition-colors font-medium border border-light-400;
+  }
+  
+  .btn-accent {
+    @apply bg-accent-500 text-white px-4 py-2 rounded-lg hover:bg-accent-600 transition-colors font-medium shadow-sm;
+  }
+  
+  .card {
+    @apply bg-light-50 rounded-xl shadow-sm border border-light-300;
+  }
+  
+  .input-field {
+    @apply w-full px-3 py-2 border border-light-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-light-50;
+  }
+  
+  .text-primary {
+    @apply text-dark-700;
+  }
+  
+  .text-secondary {
+    @apply text-dark-800;
+  }
+  
+  .bg-gradient-primary {
+    @apply bg-gradient-to-br from-primary-500 to-primary-600;
+  }
+  
+  .bg-gradient-accent {
+    @apply bg-gradient-to-br from-accent-500 to-accent-600;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}

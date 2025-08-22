@@ -1,0 +1,81 @@
+version: '3.8'
+
+services:
+  # Aplicación del cliente
+  client:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3001:80"
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      - backend
+    networks:
+      - taller-network
+
+  # Backend API (referencia al admin)
+  backend:
+    image: node:18-alpine
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    volumes:
+      - ../taller-admin:/app
+    command: >
+      sh -c "cd /app && 
+             npm install && 
+             npm run dev"
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+    networks:
+      - taller-network
+
+  # Base de datos (opcional)
+  database:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: taller_db
+      POSTGRES_USER: taller_user
+      POSTGRES_PASSWORD: taller_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - taller-network
+
+  # Redis para caché (opcional)
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - taller-network
+
+  # Nginx reverse proxy (opcional)
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx-reverse.conf:/etc/nginx/nginx.conf
+      - ./ssl:/etc/nginx/ssl
+    depends_on:
+      - client
+      - backend
+    networks:
+      - taller-network
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  taller-network:
+    driver: bridge

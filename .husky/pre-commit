@@ -1,0 +1,16 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# Verificar tipos de TypeScript
+echo "🔍 Verificando tipos de TypeScript..."
+npm run type-check
+
+# Ejecutar linter
+echo "🔍 Ejecutando linter..."
+npm run lint
+
+# Ejecutar tests (si existen)
+if [ -f "package.json" ] && grep -q "\"test\":" package.json; then
+    echo "🧪 Ejecutando tests..."
+    npm test
+fi
